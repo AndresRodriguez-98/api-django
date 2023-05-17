@@ -28,3 +28,9 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - 8081:8080
