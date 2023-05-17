@@ -26,9 +26,11 @@ class SocialUser(models.Model):
 
 class Follow(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    followed = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name="followeds")
+    followed = models.ForeignKey(
+        SocialUser, on_delete=models.CASCADE, related_name="followeds")
     created_at = models.DateTimeField(auto_now_add=True)
-    follower = models.ForeignKey(SocialUser, on_delete=models.CASCADE, related_name="followers")
+    follower = models.ForeignKey(
+        SocialUser, on_delete=models.CASCADE, related_name="followers")
 
 
 class Publication(models.Model):
