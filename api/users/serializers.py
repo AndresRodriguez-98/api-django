@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 from .models import User
 from api.users.models import SocialUser, Publication, Follow
 from django.contrib.auth.models import AnonymousUser
@@ -53,20 +53,12 @@ class PublicationSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created_at', 'user',)
 
     def create(self, validated_data):
-        """ validated_data["user"] = SocialUser.objects.first()
-        publication = super().create(validated_data)
-        return publication """
-        try:
-            user = (self.context.get("request", None)).user
-            print(user)
+        user = (self.context.get("request", None)).user
 
-            if user and not isinstance(user, AnonymousUser):
-                validated_data["user"] = SocialUser.objects.get(user=user)
-            else:
-                return None
-                
-            publication = Publication.objects.create(**validated_data)
-            return publication
+        if user and not isinstance(user, AnonymousUser):
+            validated_data["user"] = SocialUser.objects.get(user=user)
+        else:
+            raise exceptions.NotAuthenticated("No es posible crear una publicación como usuario anónimo")
 
-        except Exception as e:
-            return None
+        publication = Publication.objects.create(**validated_data)
+        return publication

@@ -46,9 +46,6 @@ class PublicationViewSet(viewsets.ModelViewSet):
     serializer_class = PublicationSerializer
     permission_classes = (IsUserOrReadOnly,)
 
-    """ def perfom_create(self, serializer):
-        serializer.save(user=self.request.user) """
-
 
 class FollowViewSet(viewsets.ModelViewSet):
     # cuando hacemos .object le avisamos que queremos ver los obj del modelo en la base de datos.
@@ -62,5 +59,3 @@ class SocialUserViewSet(viewsets.ModelViewSet):
     queryset = SocialUser.objects.all()
     serializer_class = SocialUserSerializer
     permission_classes = (IsUserOrReadOnly,)
-
-
