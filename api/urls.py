@@ -6,14 +6,19 @@ from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
 from .users.views import UserViewSet, UserCreateViewSet
+from api.users.views import PublicationViewSet, FollowViewSet, SocialUserViewSet
 
-router = DefaultRouter()
-router.register(r'users', UserViewSet)
+router = DefaultRouter()                        # Creas el objeto de configuracion a rutas.
+router.register(r'users', UserViewSet)          # Registras nuevas rutas.
 router.register(r'users', UserCreateViewSet)
+router.register(r'publications', PublicationViewSet)
+router.register(r'follows', FollowViewSet)
+router.register(r'social-users', SocialUserViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include(router.urls)),
+    path('api/v1/', include(router.urls)),      # incluye las rutas
     path('api-token-auth/', views.obtain_auth_token),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
