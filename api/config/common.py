@@ -15,6 +15,7 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'corsheaders',
 
 
         # Third party apps
@@ -30,6 +31,7 @@ class Common(Configuration):
     # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
     MIDDLEWARE = (
         'django.middleware.security.SecurityMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -199,4 +201,9 @@ class Common(Configuration):
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
         )
+        
     }
+
+    CORS_URLS_REGEX = r"^/api/.*$"
+
+    CORS_ALLOW_ALL_ORIGINS = True
