@@ -1,0 +1,36 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  postgres:
+    image: postgres:12.0
+    container_name: postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data:Z
+    env_file:
+      - ./.envs/.local/.postgres
+
+  api:
+    restart: always
+    environment:
+      - DJANGO_SECRET_KEY=local
+    build: ./
+    container_name: api
+    command: >
+      bash -c "python wait_for_postgres.py &&
+               ./manage.py migrate &&
+               ./manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - 8081:8080
